@@ -5,6 +5,9 @@ const routes = require('./routes');
 
 const PORT = process.env.PORT || 8000;
 
+// body parser
+app.use(express.json());
+
 app.use('/api', routes);
 
 app.get('/', (req, res) => {
