@@ -1,9 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const movies = require('../movies');
+const db = require('../db');
 
 router.get('/', (req, res) => {
-	res.status(200).json(movies);
+	db.query('SELECT * FROM `movies`', function (err, results, fields) {
+		if (err) {
+			throw new Error(err);
+		} else {
+			res.status(200).json(results);
+		}
+	});
 });
 
 router.get('/:id', (req, res) => {
