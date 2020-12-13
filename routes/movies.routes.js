@@ -31,24 +31,23 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+	console.log(req.body);
 	const { title, genre, year, rate } = req.body;
-	db.query(
+	const query = db.query(
 		'INSERT INTO movies(title, genre, year, rate) VALUES(?, ?, ?, ?)',
-		[title, genre, year, rate],
-		function (err, results, fields) {
-			if (err) {
-				throw new Error(err);
-			} else {
-				res.status(200).json(results.insertId);
-			}
-		}
+		[title, genre, year, rate]
 	);
+	query.on('result', (results) => {
+		db.query('SELECT * FROM movies', (err, results) => {
+			res.status(200).json(results);
+		});
+	});
 });
 
 router.put('/:id', (req, res) => {
 	const { title, genre, year, rate } = req.body;
 	db.query(
-		'UPDATE movies SET title = ?, genre = ?, year=?, rate=? WHERE id = ?',
+		'UPDATE movies SET title = ?, genre = ?, year = ?, rate = ? WHERE id = ?',
 		[title, genre, year, rate, req.params.id],
 		(err, result) => {
 			if (err) {
@@ -61,17 +60,20 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-	db.query(
-		'DELETE FROM movies WHERE id = ?',
-		[req.params.id],
-		(err, result) => {
-			if (err) {
-				throw new Error(err);
-			} else {
-				res.json(result);
-			}
-		}
-	);
+	const query = db.query('DELETE FROM movies WHERE id = ?', [req.params.id]);
+	query.on('result', (results) => {
+		db.query('SELECT * FROM `movies`', (err, results) => {
+			res.send(results);
+		});
+	});
+	// (err, result) => {
+	// 	if (err) {
+	// 		throw new Error(err);
+	// 	} else {
+	// 		res.json(result);
+	// 	}
+	// }
+	// );
 });
 
 module.exports = router;
