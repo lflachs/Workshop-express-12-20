@@ -24,7 +24,7 @@ module.exports = class Movies {
 	static findOne(id) {
 		return db.query('SELECT * FROM movies WHERE id = ?', [id]);
 	}
-	static updateOne(newInfos, id) {
+	static updateOne(id, newInfos) {
 		const { title, genre, year, rate } = newInfos;
 		return db.query(
 			'UPDATE movies SET title = ?, genre = ?, year = ?, rate = ? WHERE id = ?',
