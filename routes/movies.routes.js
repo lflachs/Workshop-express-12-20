@@ -2,15 +2,9 @@ const express = require('express');
 const router = express.Router();
 const movies = require('../movies');
 const db = require('../db');
+const { getMovies } = require('../controllers/movie.controller');
 
-router.get('/', async (req, res) => {
-	try {
-		const [movies] = await db.query('SELECT * FROM `movies`');
-		res.status(200).json(movies);
-	} catch (err) {
-		throw new Error(err);
-	}
-});
+router.get('/', getMovies);
 
 router.get('/:id', (req, res) => {
 	const id = Number(req.params.id);
