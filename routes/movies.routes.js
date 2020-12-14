@@ -10,13 +10,6 @@ router.get('/', async (req, res) => {
 	} catch (err) {
 		throw new Error(err);
 	}
-	// , function (err, results, fields) {
-	// 	if (err) {
-	// 		throw new Error(err);
-	// 	} else {
-	// 		res.status(200).json(results);
-	// 	}
-	// });
 });
 
 router.get('/:id', (req, res) => {
@@ -63,19 +56,10 @@ router.delete('/:id', (req, res) => {
 	db.query('DELETE FROM movies WHERE id = ?', [id])
 		.then(([results]) => db.query('SELECT * FROM movies'))
 		.then(([movies]) => res.status(200).json(movies));
-	// query.on('result', (results) => {
-	// 	db.query('SELECT * FROM `movies`', (err, results) => {
-	// 		res.send(results);
-	// 	});
-	// });
-	// (err, result) => {
-	// 	if (err) {
-	// 		throw new Error(err);
-	// 	} else {
-	// 		res.json(result);
-	// 	}
-	// }
-	// );
 });
+
+// fetch and add one element to the state
+// fetch('blabl', {method:'POST'})
+// .then(resp => setTodos([...todos, resp]));
 
 module.exports = router;
